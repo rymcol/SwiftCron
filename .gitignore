@@ -14,10 +14,9 @@ db/
 *.pins
 
 #Xcode
-*~.nib
-#*.xcodeproj
-#*.xcworkspace
-Backend/Perfect-APNS.xcodeproj
+~.nib
+*.xcodeproj
+*.xcworkspace
 DerivedData/
 build/
 build_lin/
