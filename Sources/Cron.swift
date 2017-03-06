@@ -26,12 +26,13 @@ public class Cron {
     
     @objc func run() {
         for job in _cronStore.jobs {
-            
-            if job.date <= Date() {
-                job.method()
-                
-                if !job.repeats {
-                    _cronStore.remove(job)
+            for date in job.dates {
+                if date <= Date() {
+                    job.method()
+                    
+                    if !job.repeats {
+                        _cronStore.remove(job)
+                    }
                 }
             }
         }

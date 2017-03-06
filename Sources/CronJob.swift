@@ -12,7 +12,7 @@ public class CronJob: Equatable {
     
     private var _id: UUID
     var method: () -> Void
-    private var _date: Date
+    private var _dates: [Date]
     private var _allowsSimultaneous: Bool
     private var _repeats: Bool
     
@@ -22,9 +22,9 @@ public class CronJob: Equatable {
         }
     }
     
-    var date: Date {
+    var dates: [Date] {
         get  {
-            return _date
+            return _dates
         }
     }
     
@@ -43,7 +43,7 @@ public class CronJob: Equatable {
     init(_ method: @escaping () -> (), executeAfter date: Date, allowsSimultaneous: Bool = false, repeats: Bool = false) {
         _id = UUID()
         self.method = method
-        _date = date
+        _dates = [date]
         _allowsSimultaneous = allowsSimultaneous
         _repeats = repeats
     }
