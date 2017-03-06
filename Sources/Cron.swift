@@ -28,7 +28,6 @@ public class Cron {
     public func start() {
         _timer = Timer.scheduledTimer(timeInterval: _interval, target: self, selector: #selector(run), userInfo: nil, repeats: true)
         RunLoop.current.add(_timer, forMode: .commonModes)
-        RunLoop.current.run()
     }
     
     @objc func run() {
@@ -36,10 +35,10 @@ public class Cron {
             
             if job.date <= Date() {
                 job.method()
-            }
-            
-            if !job.repeats {
-                self.remove(job)
+                
+                if !job.repeats {
+                    self.remove(job)
+                }
             }
         }
     }
