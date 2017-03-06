@@ -10,8 +10,9 @@ import Foundation
 
 public class Cron {
     
+    private var _interval: TimeInterval
     private var _jobs: [CronJob]
-    private var _timer: Timer
+    private var _timer: Timer!
     
     public var jobs: [CronJob] {
         get {
@@ -19,19 +20,36 @@ public class Cron {
         }
     }
     
-    public init(start: TimeInterval = 60) {
+    public init(frequency: TimeInterval = 60) {
         _jobs = [CronJob]()
-        _timer = Timer(timeInterval: start, target: TimerTarget(), selector: #selector(run), userInfo: nil, repeats: true)
+        _interval = frequency
     }
     
-    @objc private func run() {
+    public func start() {
+        _timer = Timer.scheduledTimer(timeInterval: _interval, target: self, selector: #selector(run), userInfo: nil, repeats: true)
+        RunLoop.current.add(_timer, forMode: .commonModes)
+        RunLoop.current.run()
+    }
+    
+    @objc func run() {
         for job in _jobs {
-            job.method()
+            
+            if job.date <= Date() {
+                job.method()
+            }
+            
+            if !job.repeats {
+                self.remove(job)
+            }
         }
     }
     
-}
-
-private class TimerTarget {
-    init() {  }
+    func add(_ job: CronJob) {
+        _jobs.append(job)
+    }
+    
+    func remove(_ job: CronJob) {
+        _jobs = _jobs.filter() { $0 != job }
+    }
+    
 }
