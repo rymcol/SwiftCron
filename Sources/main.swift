@@ -14,7 +14,8 @@ let theRL = RunLoop.current         // Need a reference to the current run loop
 // Welcome to Cron!
 // If you add frequency: X to the intializer here, cron will attempt to run your jobs every X seconds
 // If you do not add a frequency, it defaults to 60 (every minute)
-let cron = Cron(frequency: 3)
+let cronStorage = MemoryCronStore()
+let cron = Cron(frequency: 3, cronStorage: cronStorage)
 
 
 //Define Functions
