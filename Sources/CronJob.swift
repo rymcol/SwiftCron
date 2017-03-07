@@ -12,7 +12,7 @@ public class CronJob: Equatable {
     
     private var _id: UUID
     var method: () -> Void
-    private var _dates: [Date]
+    private var _date: Date
     private var _allowsSimultaneous: Bool
     private var _repeats: Bool
     private var _repeatInterval: TimeInterval?
@@ -23,9 +23,9 @@ public class CronJob: Equatable {
         }
     }
     
-    var dates: [Date] {
+    var date: Date {
         get  {
-            return _dates
+            return _date
         }
     }
     
@@ -41,6 +41,12 @@ public class CronJob: Equatable {
         }
     }
     
+    var repeatInterval: TimeInterval? {
+        get {
+            return _repeatInterval
+        }
+    }
+    
     /// Creates a cron job to run with cron
     ///
     /// - Parameters:
@@ -52,17 +58,14 @@ public class CronJob: Equatable {
     init(_ method: @escaping () -> (), executeAfter date: Date, allowsSimultaneous: Bool = false, repeats: Bool = false, repeatEvery interval: TimeInterval? = nil) {
         _id = UUID()
         self.method = method
-        _dates = [date]
+        _date = date
         _allowsSimultaneous = allowsSimultaneous
         _repeats = repeats
         _repeatInterval = interval
     }
     
-    public func addNextRepeat() {
-        if let interval = _repeatInterval {
-            let last = self._dates.removeLast()
-            self._dates.append(Date(timeInterval: interval, since: last))
-        }
+    public func set(date: Date) {
+        self._date = date
     }
     
     static public func == (lhs: CronJob, rhs: CronJob) -> Bool {

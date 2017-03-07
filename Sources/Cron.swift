@@ -31,16 +31,19 @@ public class Cron {
     
     @objc func run() {
         for job in _cronStore.jobs {
-            for date in job.dates {
-                if date <= Date() {
-                    job.method()
-                    
-                    if !job.repeats {
-                        _cronStore.remove(job)
-                    } else {
-                        job.addNextRepeat()
+            if job.date <= Date() {
+                job.method()
+                
+                _cronStore.remove(job)
+                
+                if job.repeats {
+                    if let interval = job.repeatInterval {
+                        job.set(date: Date(timeInterval: interval, since: job.date))
                     }
+                    
+                    cronStorage.add(job)
                 }
+                
             }
         }
     }
