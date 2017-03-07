@@ -11,6 +11,7 @@ import Foundation
 //Base Cron
 public class Cron {
     private var _cronStore: CronStore
+    private var _runningJobs: [CronJob]
     private var _timer: Timer!
     private var _interval: TimeInterval
     
@@ -22,6 +23,7 @@ public class Cron {
     public init(frequency: TimeInterval = 60, cronStorage: CronStore = MemoryCronStore()) {
         _cronStore = cronStorage
         _interval = frequency
+        _runningJobs = [CronJob]()
     }
     
     public func start() {
@@ -31,19 +33,34 @@ public class Cron {
     
     @objc func run() {
         for job in _cronStore.jobs {
-            if job.date <= Date() {
-                job.method()
-                
-                _cronStore.remove(job)
-                
-                if job.repeats {
-                    if let interval = job.repeatInterval {
-                        job.set(date: Date(timeInterval: interval, since: job.date))
+            if job.allowsSimultaneious || (!job.allowsSimultaneious && !_runningJobs.contains(job)) {
+                if job.date <= Date() {
+                    
+                    DispatchQueue.global(qos: .userInitiated).async {
+                        self._runningJobs.append(job)
+                        
+                        //                    print("Running Job ID: \(job.id)")
+                        //                    dump(self._runningJobs)
+                        
+                        job.method()
+                        
+                        DispatchQueue.main.async {
+                            self._runningJobs = self._runningJobs.filter() { $0 != job }
+                            //                        print("Removing Job ID: \(job.id)")
+                            //                        dump(self._runningJobs)
+                        }
+                    }
+                    _cronStore.remove(job)
+                    
+                    if job.repeats {
+                        if let interval = job.repeatInterval {
+                            job.set(date: Date(timeInterval: interval, since: job.date))
+                        }
+                        
+                        cronStorage.add(job)
                     }
                     
-                    cronStorage.add(job)
                 }
-                
             }
         }
     }
