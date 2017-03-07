@@ -4,6 +4,7 @@
 *.swp
 
 #Project
+Sources/main.swift
 .build
 .build_lin
 .packages_lin
