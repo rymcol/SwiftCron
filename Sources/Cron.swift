@@ -37,6 +37,8 @@ public class Cron {
                     
                     if !job.repeats {
                         _cronStore.remove(job)
+                    } else {
+                        job.addNextRepeat()
                     }
                 }
             }
