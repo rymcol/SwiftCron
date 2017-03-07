@@ -56,6 +56,12 @@ public class Cron {
         self._cronStore.add(job)
     }
     
+    public func add(_ jobs: [CronJob]) {
+        for job in jobs {
+            add(job)
+        }
+    }
+    
     public func remove(_ job: CronJob) {
         self._cronStore.remove(job)
     }
