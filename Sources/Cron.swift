@@ -14,6 +14,11 @@ public class Cron {
     private var _timer: Timer!
     private var _interval: TimeInterval
     
+    /// Cron Initialization
+    ///
+    /// - Parameters:
+    ///   - frequency: how often to check for and run cron jobs that have passed their run Date, in seconds
+    ///   - cronStorage: Where to store cron jobs (default is in memory, but you can use a pre-made database connector or your own implementation here)
     public init(frequency: TimeInterval = 60, cronStorage: CronStore = MemoryCronStore()) {
         _cronStore = cronStorage
         _interval = frequency
