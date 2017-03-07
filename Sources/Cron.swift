@@ -27,6 +27,7 @@ public class Cron {
     }
     
     public func start() {
+        run()
         _timer = Timer.scheduledTimer(timeInterval: _interval, target: self, selector: #selector(run), userInfo: nil, repeats: true)
         RunLoop.current.add(_timer, forMode: .commonModes)
     }
