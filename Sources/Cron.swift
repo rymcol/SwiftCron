@@ -58,7 +58,7 @@ public class Cron {
                             job.set(date: Date(timeInterval: interval, since: job.date))
                         }
                         
-                        cronStorage.add(job)
+                        _cronStore.add(job)
                     }
                     
                 }
