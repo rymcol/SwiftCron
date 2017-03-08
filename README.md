@@ -6,6 +6,8 @@
     </a>
 </p>
 
+Welcome! This project will hopefully help you run scheduled and repeating functions in Swift! This is a very basic start to having a robust cron application in pure Swift. There is still a lot of work to be done. Pull requests are encouraged and welcomed... 😃
+
 ## Setup
 
 To Add Cron to your Project, you first need to add this repository as a dependency in Package.swift:
