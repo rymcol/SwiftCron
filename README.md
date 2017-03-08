@@ -30,7 +30,7 @@ let package = Package(
     name: "Swift-Cron-Test",
     targets: [],
     dependencies: [
-    .Package(url: "git@github.com:rymcol/SwiftCron.git", majorVersion: 0)
+    .Package(url: "https://github.com/rymcol/SwiftCron.git", majorVersion: 0)
     ]
 )
 ```
