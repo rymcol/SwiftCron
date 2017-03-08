@@ -55,7 +55,7 @@ public class CronJob: Equatable {
     ///   - allowsSimultaneous: if more than one of this job can run at the same time, not currently implemented
     ///   - repeats: if you want the job to repeat after it's first run
     ///   - interval: how often, in seconds, the func should be called after it's been started first. Note: if it doesn't allow simulatneous running, it will not run until the first job has been executed (once implemented). If it does, it will start regardless to whether or not the last run has finished. 
-    init(_ method: @escaping () -> (), executeAfter date: Date = Date(), allowsSimultaneous: Bool = false, repeats: Bool = false, repeatEvery interval: TimeInterval? = nil) {
+    public init(_ method: @escaping () -> (), executeAfter date: Date = Date(), allowsSimultaneous: Bool = false, repeats: Bool = false, repeatEvery interval: TimeInterval? = nil) {
         _id = UUID()
         self.method = method
         _date = date
