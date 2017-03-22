@@ -8,6 +8,9 @@
 
 Welcome! This project will hopefully help you run scheduled and repeating functions in Swift! This is a very basic start to having a robust cron application in pure Swift. There is still a lot of work to be done. Pull requests are encouraged and welcomed... 😃
 
+### IMPORTANT NOTE FOR UBUNTU USERS
+Right now this library uses NSTimer and, thus #selector and needs the objective-c runtime, so it only works on macOS. I am looking into other ways to accomplish this, but until then you're stuck with macOS. 
+
 ## Setup
 
 To Add Cron to your Project, you first need to add this repository as a dependency in Package.swift:
