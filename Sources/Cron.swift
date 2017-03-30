@@ -7,50 +7,50 @@
 //
 
 import Foundation
+import PerfectThread
+#if os(Linux)
+    import SwiftGlibc
+#else
+    import Darwin
+#endif
 
-//Base Cron
 public class Cron {
     private var _cronStore: CronStore
     private var _runningJobs: [CronJob]
-    private var _timer: Timer!
-    private var _interval: TimeInterval
+    private var _interval: UInt32
+    private var _run: Bool
     
     /// Cron Initialization
     ///
     /// - Parameters:
     ///   - frequency: how often to check for and run cron jobs that have passed their run Date, in seconds
     ///   - cronStorage: Where to store cron jobs (default is in memory, but you can use a pre-made database connector or your own implementation here)
-    public init(frequency: TimeInterval = 60, cronStorage: CronStore = MemoryCronStore()) {
+    public init(frequency: UInt32 = 60, cronStorage: CronStore = MemoryCronStore()) {
         _cronStore = cronStorage
         _interval = frequency
         _runningJobs = [CronJob]()
+        _run = true
     }
     
     public func start() {
-        run()
-        _timer = Timer.scheduledTimer(timeInterval: _interval, target: self, selector: #selector(run), userInfo: nil, repeats: true)
-        RunLoop.current.add(_timer, forMode: .commonModes)
+        while self._run {
+            sleep(self._interval)
+            run()
+        }
     }
     
-    @objc func run() {
+    func run() {
         for job in _cronStore.jobs {
             if job.allowsSimultaneious || (!job.allowsSimultaneious && !_runningJobs.contains(job)) {
                 if job.date <= Date() {
                     
-                    DispatchQueue.global(qos: .userInitiated).async {
+                    let _ = Promise() {
                         self._runningJobs.append(job)
-                        
-                        //                    print("Running Job ID: \(job.id)")
-                        //                    dump(self._runningJobs)
-                        
                         job.method()
-                        
-                        DispatchQueue.main.async {
+                        }.then() {_ in
                             self._runningJobs = self._runningJobs.filter() { $0 != job }
-                            //                        print("Removing Job ID: \(job.id)")
-                            //                        dump(self._runningJobs)
-                        }
                     }
+                    
                     _cronStore.remove(job)
                     
                     if job.repeats {
@@ -67,7 +67,7 @@ public class Cron {
     }
     
     public func stop() {
-        _timer.invalidate()
+        _run = false
     }
     
     public func add(_ job: CronJob) {
