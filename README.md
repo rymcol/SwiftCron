@@ -8,9 +8,6 @@
 
 Welcome! This project will hopefully help you run scheduled and repeating functions in Swift! This is a very basic start to having a robust cron application in pure Swift. There is still a lot of work to be done. Pull requests are encouraged and welcomed... 😃
 
-### IMPORTANT NOTE FOR UBUNTU USERS
-Right now this library uses NSTimer and, thus #selector and needs the objective-c runtime, so it only works on macOS. I am looking into other ways to accomplish this, but until then you're stuck with macOS. 
-
 ## Setup
 
 To Add Cron to your Project, you first need to add this repository as a dependency in Package.swift:
@@ -40,16 +37,11 @@ let package = Package(
 
 ## Usage
 
-### Required Executable
-
-Your main.swift will need some boilerplate code. You can grab this from the example repository, but you will need an absolute minimum of:
+Needs a minimum of:
 
 ```
 import Foundation
 import SwiftCron
-
-var shouldKeepRunning = true        // change this `false` to stop the application from running
-let theRL = RunLoop.current         // Need a reference to the current run loop
 
 // Welcome to Cron!
 // If you add frequency: X to the intializer here, cron will attempt to run your jobs every X seconds
@@ -68,10 +60,6 @@ cron.add(job)
 
 //Start Cron So the Jobs Run
 cron.start()
-
-//Start and Keep Running the Run Loop
-while shouldKeepRunning && theRL.run(mode: .defaultRunLoopMode, before: .distantFuture) {  }
-
 ```
 
 Everything should go in the order it is in the example. You may also import functions from another Framework or write your own inside new files in your project. Cron will accept any valid functions that have no return and no parameters. 
@@ -119,16 +107,5 @@ After defining jobs, `cron.add(job)` will add that job to cron. You can also cal
 #### Starting Cron
 
 `cron.start()` will start the Cron machine running, thus running any jobs added, assuming they're beyond their `executeAfter:` Date. 
-
-#### Keeping it all Running
-
-Last, but certainly not least is:
-
-```
-//Start and Keep Running the Run Loop
-while shouldKeepRunning && theRL.run(mode: .defaultRunLoopMode, before: .distantFuture) {  }
-```
-
-This **MUST** be at the **END** of main.swift, because it keeps the application running. Without this line at the end, the application would simply terminate on launch. 
 
 Hopefully there is more to come. For now, please enjoy. 
