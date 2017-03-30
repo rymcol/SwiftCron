@@ -13,6 +13,7 @@ Packages
 db/
 *.orig
 *.pins
+PADockerfile_build
 
 #Xcode
 ~.nib
