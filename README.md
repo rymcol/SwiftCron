@@ -4,6 +4,9 @@
     <a href="https://developer.apple.com/swift/" target="_blank">
         <img src="https://img.shields.io/badge/Swift-3.0-orange.svg?style=flat" alt="Swift 3.0">
     </a>
+    <a href="https://developer.apple.com/swift/" target="_blank">
+        <img src="https://img.shields.io/badge/Swift-3.1-orange.svg?style=flat" alt="Swift 3.1">
+    </a>
 </p>
 
 Welcome! This project will hopefully help you run scheduled and repeating functions in Swift! This is a very basic start to having a robust cron application in pure Swift. There is still a lot of work to be done. Pull requests are encouraged and welcomed... 😃
