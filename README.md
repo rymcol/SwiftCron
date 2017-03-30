@@ -23,7 +23,9 @@ Second, you need to add a new executable target in Sources, and in Package.swift
 
 Example-Project
 ├── Sources
+
 │   ├── main.swift
+
 └── Package.swift
 
 And a corresponding Package.swift that looks similar to this:
