@@ -21,12 +21,12 @@ To Add Cron to your Project, you first need to add this repository as a dependen
 
 Second, you need to add a new executable target in Sources, and in Package.swift. You should end up with a directory structure that is at minimum like this:
 
+```
 Example-Project
 ├── Sources
-
 │   ├── main.swift
-
 └── Package.swift
+```
 
 And a corresponding Package.swift that looks similar to this:
 
