@@ -37,6 +37,10 @@ let package = Package(
 
 ## Usage
 
+### Required Executable
+
+You MUST put your cron in its own executable target (it blocks, so nothing after cron.start() will ever run, and if you put it after, say starting a Server-Side Swift Server, that will stop cron from ever starting)
+
 Needs a minimum of:
 
 ```
