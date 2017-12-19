@@ -1,10 +1,18 @@
-// Generated automatically by Perfect Assistant Application
-// Date: 2017-03-30 14:16:39 +0000
+// swift-tools-version:4.0
+
 import PackageDescription
+
 let package = Package(
     name: "SwiftCron",
-    targets: [],
+    products: [
+        .library(name: "SwiftCron", targets: ["SwiftCron"])
+    ],
     dependencies: [
-        .Package(url: "https://github.com/PerfectlySoft/Perfect-Thread.git", majorVersion: 2),
+        .package(url: "https://github.com/PerfectlySoft/Perfect-Thread.git", .upToNextMinor(from: "3.0.2")),
+        ],
+    targets: [
+        .target(name: "SwiftCron", dependencies: ["PerfectThread"]),
+        .testTarget(name: "SwiftCronTests", dependencies: ["PerfectThread"], path: "./Tests/Swift-CronTests")
     ]
 )
+
