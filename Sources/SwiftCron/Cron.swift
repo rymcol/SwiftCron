@@ -19,6 +19,7 @@ public class Cron {
     private var _runningJobs: [CronJob]
     private var _interval: UInt32
     private var _run: Bool
+    private let queue = DispatchQueue(label: "SerialQueueCorn")
     
     /// Cron Initialization
     ///
@@ -40,27 +41,29 @@ public class Cron {
     }
     
     func run() {
-        for job in _cronStore.jobs {
-            if job.allowsSimultaneious || (!job.allowsSimultaneious && !_runningJobs.contains(job)) {
-                if job.date <= Date() {
-                    
-                    let _ = Promise() {
-                        self._runningJobs.append(job)
-                        job.method()
-                        }.then() {_ in
-                            self._runningJobs = self._runningJobs.filter() { $0 != job }
-                    }
-                    
-                    _cronStore.remove(job)
-                    
-                    if job.repeats {
-                        if let interval = job.repeatInterval {
-                            job.set(date: Date(timeInterval: interval, since: job.date))
+        queue.async {
+            for job in self._cronStore.jobs {
+                if job.allowsSimultaneious || (!job.allowsSimultaneious && !self._runningJobs.contains(job)) {
+                    if job.date <= Date() {
+                        
+                        let _ = Promise() {
+                            self._runningJobs.append(job)
+                            job.method()
+                            }.then() {_ in
+                                self._runningJobs = self._runningJobs.filter() { $0 != job }
                         }
                         
-                        _cronStore.add(job)
+                        self._cronStore.remove(job)
+                        
+                        if job.repeats {
+                            if let interval = job.repeatInterval {
+                                job.set(date: Date(timeInterval: interval, since: job.date))
+                            }
+                            
+                            self._cronStore.add(job)
+                        }
+                        
                     }
-                    
                 }
             }
         }
