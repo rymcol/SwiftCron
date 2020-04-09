@@ -2,7 +2,7 @@
 
 <p align="center">
     <a href="https://developer.apple.com/swift/" target="_blank">
-        <img src="https://img.shields.io/badge/Swift-4-orange.svg?style=flat" alt="Swift 4">
+        <img src="https://img.shields.io/badge/Swift-5-orange.svg?style=flat" alt="Swift 5">
     </a>
  <img src="https://img.shields.io/badge/Platforms-%20Docker%20%7C%20Darwin%20%7C%20Linux%20-brightgreen.svg" alt="Platforms" />
 </p>
